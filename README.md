@@ -32,14 +32,32 @@ else
   TAG="arm32v7"
 fi
 
+
+IMAGE="ghcr.io/dazwilkin/fly-exporter:${TAG}"
+
 podman build \
 --build-arg=GOLANG_OPTIONS="CGO_ENABLED=0 GOOS=linux ${ARCH}" \
 --build-arg=COMMIT=$(git rev-parse HEAD) \
 --build-arg=VERSION=$(uname --kernel-release) \
---tag=ghcr.io/dazwilkin/gcp-exporter:${TAG} \
+--tag={IMAGE} \
 --file=./Dockerfile \
 .
 ```
+
+Then:
+
+```bash
+POD="exporter"
+IMAGE="ghcr.io/dazwilkin/fly-exporter:${TAG}"
+
+podman run \
+--detach --tty --rm \
+--pod=${POD} \
+--name=fly-exporter \
+--env=TOKEN=${TOKEN} \
+${IMAGE} \
+  --endpoint=0.0.0.0:8080
+
 
 ## [Sigstore](https://www.sigstore.dev)
 
