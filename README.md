@@ -2,13 +2,13 @@
 
 [![build-container](https://github.com/DazWilkin/fly-exporter/actions/workflows/build.yml/badge.svg)](https://github.com/DazWilkin/fly-exporter/actions/workflows/build.yml)
 
-+ `ghcr.io/dazwilkin/fly-exporter:cd64831e0d547ab039b4c6f14e1144aa99238b8a`
++ `ghcr.io/dazwilkin/fly-exporter:897f2bbe476e834c9a3a0b53784c5d0360bfb5f9`
 
 ## Container
 
 ```bash
 TOKEN="[FLY-TOKEN]"
-IMAGE="ghcr.io/dazwilkin/fly-exporter:cd64831e0d547ab039b4c6f14e1144aa99238b8a"
+IMAGE="ghcr.io/dazwilkin/fly-exporter:897f2bbe476e834c9a3a0b53784c5d0360bfb5f9"
 
 podman run \
 --interactive --tty --rm \
@@ -29,7 +29,7 @@ Yields:
 ```
 # HELP build_info A metric with a constant '1' value labeled by OS version, Go version, and the Git commit of the exporter
 # TYPE build_info counter
-build_info{git_commit="b6d8c2fd562e5f482e709e229af0910ce8502969",go_version="go1.18.2",os_version="5.15.32-v8+"} 1
+build_info{git_commit="897f2bbe476e834c9a3a0b53784c5d0360bfb5f9",go_version="go1.18.2",os_version="5.15.32-v8+"} 1
 # HELP fly_exporter_apps Total Number of Apps
 # TYPE fly_exporter_apps counter
 fly_exporter_apps{deployed="true",id="foo",name="foo",org_slug="personal",status="running"} 1
@@ -87,7 +87,7 @@ fly-exporter container images are being signed by Sigstore and may be verified:
 ```bash
 cosign verify \
 --key=./cosign.pub \
-ghcr.io/dazwilkin/fly-exporter:cd64831e0d547ab039b4c6f14e1144aa99238b8a
+ghcr.io/dazwilkin/fly-exporter:897f2bbe476e834c9a3a0b53784c5d0360bfb5f9
 ```
 
 > **NOTE** cosign.pub may be downloaded [here](/cosign.pub)
@@ -98,3 +98,6 @@ To install `cosign`:
 go install github.com/sigstore/cosign/cmd/cosign@latest
 ```
 
+<hr/>
+<br/>
+<a href="https://www.buymeacoffee.com/dazwilkin" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
