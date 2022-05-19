@@ -78,7 +78,7 @@ podman run \
 --env=TOKEN=${TOKEN} \
 ${IMAGE} \
   --endpoint=0.0.0.0:8080
-
+```
 
 ## [Sigstore](https://www.sigstore.dev)
 
