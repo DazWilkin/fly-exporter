@@ -2,13 +2,13 @@ i# Prometheus Exporter for Fly
 
 [![build-container](https://github.com/DazWilkin/fly-exporter/actions/workflows/build.yml/badge.svg)](https://github.com/DazWilkin/fly-exporter/actions/workflows/build.yml)
 
-+ `ghcr.io/dazwilkin/fly-exporter:8d9b789a6fd0bcf5c5d18016ecbb567710492f35`
++ `ghcr.io/dazwilkin/fly-exporter:faa1b67cbe8363111d36daf6a1397ef4ec2174ba`
 
 ## Container
 
 ```bash
 TOKEN="[FLY-TOKEN]"
-IMAGE="ghcr.io/dazwilkin/fly-exporter:8d9b789a6fd0bcf5c5d18016ecbb567710492f35"
+IMAGE="ghcr.io/dazwilkin/fly-exporter:faa1b67cbe8363111d36daf6a1397ef4ec2174ba"
 
 podman run \
 --interactive --tty --rm \
@@ -66,7 +66,7 @@ fly-exporter container images are being signed by Sigstore and may be verified:
 ```bash
 cosign verify \
 --key=./cosign.pub \
-ghcr.io/dazwilkin/fly-exporter:8d9b789a6fd0bcf5c5d18016ecbb567710492f35
+ghcr.io/dazwilkin/fly-exporter:faa1b67cbe8363111d36daf6a1397ef4ec2174ba
 ```
 
 > **NOTE** cosign.pub may be downloaded [here](/cosign.pub)
