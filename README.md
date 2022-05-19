@@ -2,13 +2,13 @@ i# Prometheus Exporter for Fly
 
 [![build-container](https://github.com/DazWilkin/fly-exporter/actions/workflows/build.yml/badge.svg)](https://github.com/DazWilkin/fly-exporter/actions/workflows/build.yml)
 
-+ `ghcr.io/dazwilkin/fly-exporter:faa1b67cbe8363111d36daf6a1397ef4ec2174ba`
++ `ghcr.io/dazwilkin/fly-exporter:8d9b789a6fd0bcf5c5d18016ecbb567710492f35`
 
 ## Container
 
 ```bash
 TOKEN="[FLY-TOKEN]"
-IMAGE="ghcr.io/dazwilkin/fly-exporter:faa1b67cbe8363111d36daf6a1397ef4ec2174ba"
+IMAGE="ghcr.io/dazwilkin/fly-exporter:8d9b789a6fd0bcf5c5d18016ecbb567710492f35"
 
 podman run \
 --interactive --tty --rm \
@@ -16,6 +16,27 @@ podman run \
 --publish=8080:8080 \
 ${IMAGE} \
   --endpoint=0.0.0.0:8080
+```
+
+## Metrics
+
+```bash
+curl http://localhost:8080/metrics
+```
+
+Yields:
+
+```
+# HELP build_info A metric with a constant '1' value labeled by OS version, Go version, and the Git commit of the exporter
+# TYPE build_info counter
+build_info{git_commit="faa1b67cbe8363111d36daf6a1397ef4ec2174ba",go_version="go1.18.2",os_version="5.15.32-v8+"} 1
+# HELP fly_exporter_apps Total Number of Apps
+# TYPE fly_exporter_apps counter
+fly_exporter_apps{deployed="true",id="foo",name="foo",org_slug="personal",status="running"} 1
+fly_exporter_apps{deployed="true",id="foo",name="foo",org_slug="personal",status="running"} 1
+# HELP start_time Exporter start time in Unix epoch seconds
+# TYPE start_time gauge
+start_time 1.652975685e+09
 ```
 
 ## Raspberry Pi
@@ -66,7 +87,7 @@ fly-exporter container images are being signed by Sigstore and may be verified:
 ```bash
 cosign verify \
 --key=./cosign.pub \
-ghcr.io/dazwilkin/fly-exporter:faa1b67cbe8363111d36daf6a1397ef4ec2174ba
+ghcr.io/dazwilkin/fly-exporter:8d9b789a6fd0bcf5c5d18016ecbb567710492f35
 ```
 
 > **NOTE** cosign.pub may be downloaded [here](/cosign.pub)
