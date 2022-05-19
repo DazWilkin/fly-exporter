@@ -1,3 +1,9 @@
 # Don't add keys
 cosign.key
 
+# Possible secrets
+.env.test
+
+# Don't add VSCode
+.vscode
+
