@@ -35,7 +35,6 @@ var (
 )
 var (
 	token = os.Getenv("TOKEN")
-	orgId = os.Getenv("ORGID")
 )
 
 func handleHealthz(w http.ResponseWriter, _ *http.Request) {
@@ -52,11 +51,6 @@ func main() {
 
 	if token == "" {
 		msg := "environment variable `TOKEN` is required (use `flyctl auth token`)"
-		log.Info(msg)
-		panic(msg)
-	}
-	if orgId == "" {
-		msg := "environment variable `ORGID` is required (use `flyctl orgs list --json | jq -r '.PersonalOrganization.ID'`)"
 		log.Info(msg)
 		panic(msg)
 	}
