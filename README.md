@@ -1,4 +1,6 @@
-# Prometheus Exporter for Fly
+i# Prometheus Exporter for Fly
+
+[![build-container](https://github.com/DazWilkin/fly-exporter/actions/workflows/build.yml/badge.svg)](https://github.com/DazWilkin/fly-exporter/actions/workflows/build.yml)
 
 + `ghcr.io/dazwilkin/fly-exporter:1234567890123456789012345678901234567890`
 
