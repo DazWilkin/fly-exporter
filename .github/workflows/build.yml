@@ -32,7 +32,7 @@ jobs:
           build-args: |
             VERSION=${{ env.VERSION }}
             COMMIT=${{ github.sha }}
-          tags: ghcr.io/${{ env.REPO }}:${{ github.sha }}
+          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
           push: true
       # - name: Sigstore installer
       #   uses: sigstore/cosign-installer@main
