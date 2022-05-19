@@ -9,8 +9,8 @@ jobs:
   fly-exporter:
     name: fly-exporter
     runs-on: ubuntu-latest
-    env:
-      REPO: dazwilkin/fly-exporter
+    # env:
+    #   REPO: dazwilkin/fly-exporter
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -46,7 +46,7 @@ jobs:
       #     --annotations="workflow=${{ github.workflow }}" \
       #     --annotations="commit=${{ github.sha }}" \
       #     --annotations="version=${{ env.VERSION }}" \
-      #     ghcr.io/${{ env.REPO }}:${{ github.sha }}
+      #     ghcr.io/${{ github.repository }}:${{ github.sha }}
       #   env:
       #     COSIGN_PASSWORD: ""
       # - name: Revise occurrences of the image
