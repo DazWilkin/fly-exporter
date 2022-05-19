@@ -9,6 +9,11 @@ ARG PROJECT
 
 WORKDIR /${PROJECT}
 
+COPY go.mod go.mod
+COPY go.sum go.sum
+
+RUN go mod download
+
 COPY main.go ./
 COPY collector ./collector
 
@@ -19,13 +24,13 @@ RUN env ${GOLANG_OPTIONS} \
     go build \
     -ldflags "-X main.OSVersion=${VERSION} -X main.GitCommit=${COMMIT}" \
     -a -installsuffix cgo \
-    -o /go/bin/exporter \
+    -o /bin/exporter \
     ./main.go
 
 FROM gcr.io/distroless/base-debian11
 
 LABEL org.opencontainers.image.source https://github.com/DazWilkin/fly-exporter
 
-COPY --from=build /go/bin/exporter /
+COPY --from=build /bin/exporter /
 
 ENTRYPOINT ["/exporter"]
