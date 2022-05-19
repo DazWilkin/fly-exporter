@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/DazWilkin/fly.io/collector"
+	"github.com/DazWilkin/fly-exporter/collector"
 
 	"github.com/go-logr/logr"
 	"github.com/go-logr/stdr"

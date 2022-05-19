@@ -1,4 +1,4 @@
-module github.com/DazWilkin/fly.io
+module github.com/DazWilkin/fly-exporter
 
 go 1.18
 
