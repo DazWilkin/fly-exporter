@@ -29,7 +29,7 @@ Yields:
 ```
 # HELP build_info A metric with a constant '1' value labeled by OS version, Go version, and the Git commit of the exporter
 # TYPE build_info counter
-build_info{git_commit="faa1b67cbe8363111d36daf6a1397ef4ec2174ba",go_version="go1.18.2",os_version="5.15.32-v8+"} 1
+build_info{git_commit="b6d8c2fd562e5f482e709e229af0910ce8502969",go_version="go1.18.2",os_version="5.15.32-v8+"} 1
 # HELP fly_exporter_apps Total Number of Apps
 # TYPE fly_exporter_apps counter
 fly_exporter_apps{deployed="true",id="foo",name="foo",org_slug="personal",status="running"} 1
