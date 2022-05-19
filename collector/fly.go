@@ -2,6 +2,8 @@ package collector
 
 import (
 	"context"
+	"fmt"
+	"strconv"
 
 	"github.com/go-logr/logr"
 	"github.com/prometheus/client_golang/prometheus"
@@ -11,7 +13,16 @@ import (
 )
 
 const (
+	namespace string = "fly"
+	subsystem string = "exporter"
+	version   string = "v0.0.1"
+)
+const (
 	url string = "https://api.fly.io"
+)
+
+var (
+	name string = fmt.Sprintf("%s_%s", namespace, subsystem)
 )
 
 // FlyCollector collects metrics
@@ -29,9 +40,9 @@ func NewFlyCollector(token string, log logr.Logger) *FlyCollector {
 		Log:   log,
 
 		Count: prometheus.NewDesc(
-			"apps_count",
-			"Number of Apps",
-			[]string{"org_name"},
+			prometheus.BuildFQName(namespace, subsystem, "apps"),
+			"Total Number of Apps",
+			[]string{"id", "name", "org_slug", "status", "deployed"},
 			nil,
 		),
 	}
@@ -42,7 +53,7 @@ func (c *FlyCollector) Collect(ch chan<- prometheus.Metric) {
 	log := c.Log.WithName("Collect")
 
 	api.SetBaseURL(url)
-	client := api.NewClient(c.Token, "foo", "foo", terminal.DefaultLogger)
+	client := api.NewClient(c.Token, name, version, terminal.DefaultLogger)
 
 	ctx := context.Background()
 	role := ""
@@ -51,13 +62,19 @@ func (c *FlyCollector) Collect(ch chan<- prometheus.Metric) {
 		log.Error(err, "unable to get apps")
 	}
 
+	log.Info("Retrieved apps",
+		"number", len(apps),
+	)
+
 	for _, app := range apps {
-		log.Info(app.ID, app.Name, app.Organization, app.Regions)
+		log.Info("Details",
+			"app", app,
+		)
 		ch <- prometheus.MustNewConstMetric(
 			c.Count,
 			prometheus.CounterValue,
 			1.0,
-			app.Organization.Name,
+			app.ID, app.Name, app.Organization.Slug, app.Status, strconv.FormatBool(app.Deployed),
 		)
 	}
 
