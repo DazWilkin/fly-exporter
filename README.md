@@ -3,13 +3,13 @@
 [![build-container](https://github.com/DazWilkin/fly-exporter/actions/workflows/build.yml/badge.svg)](https://github.com/DazWilkin/fly-exporter/actions/workflows/build.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/DazWilkin/fly-exporter)](https://goreportcard.com/report/github.com/DazWilkin/fly-exporter)
 
-+ `ghcr.io/dazwilkin/fly-exporter:897f2bbe476e834c9a3a0b53784c5d0360bfb5f9`
++ `ghcr.io/dazwilkin/fly-exporter:217d3147a5e1dac50a6fb56da8b489c8a1ea23cd`
 
 ## Container
 
 ```bash
 TOKEN="[FLY-TOKEN]"
-IMAGE="ghcr.io/dazwilkin/fly-exporter:897f2bbe476e834c9a3a0b53784c5d0360bfb5f9"
+IMAGE="ghcr.io/dazwilkin/fly-exporter:217d3147a5e1dac50a6fb56da8b489c8a1ea23cd"
 
 podman run \
 --interactive --tty --rm \
@@ -88,7 +88,7 @@ fly-exporter container images are being signed by Sigstore and may be verified:
 ```bash
 cosign verify \
 --key=./cosign.pub \
-ghcr.io/dazwilkin/fly-exporter:897f2bbe476e834c9a3a0b53784c5d0360bfb5f9
+ghcr.io/dazwilkin/fly-exporter:217d3147a5e1dac50a6fb56da8b489c8a1ea23cd
 ```
 
 > **NOTE** cosign.pub may be downloaded [here](/cosign.pub)
