@@ -1,36 +1,41 @@
 package collector
 
 import (
+	"github.com/go-logr/logr"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
 // ExporterCollector collects metrics, mostly runtime, about this exporter in general.
 type ExporterCollector struct {
-	gitCommit string
-	goVersion string
-	osVersion string
-	startTime int64
-
+	System    System
+	Build     Build
+	Log       logr.Logger
 	StartTime *prometheus.Desc
 	BuildInfo *prometheus.Desc
 }
 
-// NewExporterCollector returns a new ExporterCollector.
-func NewExporterCollector(osVersion, goVersion, gitCommit string, startTime int64) *ExporterCollector {
-	return &ExporterCollector{
-		osVersion: osVersion,
-		goVersion: goVersion,
-		gitCommit: gitCommit,
-		startTime: startTime,
+// Build is a type that represents the build info
+type Build struct {
+	GitCommit string
+	GoVersion string
+	OsVersion string
+	StartTime int64
+}
 
+// NewExporterCollector returns a new ExporterCollector.
+func NewExporterCollector(s System, b Build, log logr.Logger) *ExporterCollector {
+	return &ExporterCollector{
+		System: s,
+		Build:  b,
+		Log:    log,
 		StartTime: prometheus.NewDesc(
-			"start_time",
+			prometheus.BuildFQName(s.Namespace, s.Subsystem, "start_time"),
 			"Exporter start time in Unix epoch seconds",
 			nil,
 			nil,
 		),
 		BuildInfo: prometheus.NewDesc(
-			"build_info",
+			prometheus.BuildFQName(s.Namespace, s.Subsystem, "build_info"),
 			"A metric with a constant '1' value labeled by OS version, Go version, and the Git commit of the exporter",
 			[]string{"os_version", "go_version", "git_commit"},
 			nil,
@@ -40,16 +45,20 @@ func NewExporterCollector(osVersion, goVersion, gitCommit string, startTime int6
 
 // Collect implements Prometheus' Collector interface and is used to collect metrics
 func (c *ExporterCollector) Collect(ch chan<- prometheus.Metric) {
+	log := c.Log.WithName("Collect")
+	log.Info("Metrics",
+		"start_time", c.Build.StartTime,
+	)
 	ch <- prometheus.MustNewConstMetric(
 		c.StartTime,
 		prometheus.GaugeValue,
-		float64(c.startTime),
+		float64(c.Build.StartTime),
 	)
 	ch <- prometheus.MustNewConstMetric(
 		c.BuildInfo,
 		prometheus.CounterValue,
 		1.0,
-		c.osVersion, c.goVersion, c.gitCommit,
+		c.Build.OsVersion, c.Build.GoVersion, c.Build.GitCommit,
 	)
 }
 

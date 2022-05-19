@@ -17,6 +17,12 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
+const (
+	namespace string = "fly"
+	subsystem string = "exporter"
+	version   string = "v0.0.1"
+)
+
 var (
 	// GitCommit is the git commit value and is expected to be set during build
 	GitCommit string
@@ -63,8 +69,22 @@ func main() {
 	}
 
 	registry := prometheus.NewRegistry()
-	registry.MustRegister(collector.NewExporterCollector(OSVersion, GoVersion, GitCommit, StartTime))
-	registry.MustRegister(collector.NewFlyCollector(token, log))
+
+	s := collector.System{
+		Namespace: namespace,
+		Subsystem: subsystem,
+		Version:   version,
+	}
+
+	b := collector.Build{
+		OsVersion: OSVersion,
+		GoVersion: GoVersion,
+		GitCommit: GitCommit,
+		StartTime: StartTime,
+	}
+
+	registry.MustRegister(collector.NewExporterCollector(s, b, log))
+	registry.MustRegister(collector.NewFlyCollector(s, token, log))
 
 	mux := http.NewServeMux()
 	mux.Handle("/", http.HandlerFunc(handleRoot))

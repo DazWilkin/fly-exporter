@@ -13,34 +13,26 @@ import (
 )
 
 const (
-	namespace string = "fly"
-	subsystem string = "exporter"
-	version   string = "v0.0.1"
-)
-const (
 	url string = "https://api.fly.io"
-)
-
-var (
-	name string = fmt.Sprintf("%s_%s", namespace, subsystem)
 )
 
 // FlyCollector collects metrics
 type FlyCollector struct {
-	Token string
-	Log   logr.Logger
-
-	Count *prometheus.Desc
+	System System
+	Token  string
+	Log    logr.Logger
+	Apps   *prometheus.Desc
 }
 
 // NewFlyCollector returns a new FlyCollector
-func NewFlyCollector(token string, log logr.Logger) *FlyCollector {
+func NewFlyCollector(s System, token string, log logr.Logger) *FlyCollector {
 	return &FlyCollector{
-		Token: token,
-		Log:   log,
+		System: s,
+		Token:  token,
+		Log:    log,
 
-		Count: prometheus.NewDesc(
-			prometheus.BuildFQName(namespace, subsystem, "apps"),
+		Apps: prometheus.NewDesc(
+			prometheus.BuildFQName(s.Namespace, s.Subsystem, "apps"),
 			"Total Number of Apps",
 			[]string{"id", "name", "org_slug", "status", "deployed"},
 			nil,
@@ -53,7 +45,8 @@ func (c *FlyCollector) Collect(ch chan<- prometheus.Metric) {
 	log := c.Log.WithName("Collect")
 
 	api.SetBaseURL(url)
-	client := api.NewClient(c.Token, name, version, terminal.DefaultLogger)
+	name := fmt.Sprintf("%s_%s", c.System.Namespace, c.System.Subsystem)
+	client := api.NewClient(c.Token, name, c.System.Version, terminal.DefaultLogger)
 
 	ctx := context.Background()
 	role := ""
@@ -71,7 +64,7 @@ func (c *FlyCollector) Collect(ch chan<- prometheus.Metric) {
 			"app", app,
 		)
 		ch <- prometheus.MustNewConstMetric(
-			c.Count,
+			c.Apps,
 			prometheus.CounterValue,
 			1.0,
 			app.ID, app.Name, app.Organization.Slug, app.Status, strconv.FormatBool(app.Deployed),
@@ -82,5 +75,5 @@ func (c *FlyCollector) Collect(ch chan<- prometheus.Metric) {
 
 // Describe implements Prometheus' Collector interface and is used to describe metrics
 func (c *FlyCollector) Describe(ch chan<- *prometheus.Desc) {
-	ch <- c.Count
+	ch <- c.Apps
 }
