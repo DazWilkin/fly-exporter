@@ -1,6 +1,7 @@
 # Prometheus Exporter for Fly
 
 [![build-container](https://github.com/DazWilkin/fly-exporter/actions/workflows/build.yml/badge.svg)](https://github.com/DazWilkin/fly-exporter/actions/workflows/build.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/DazWilkin/fly-exporter)](https://goreportcard.com/report/github.com/DazWilkin/fly-exporter)
 
 + `ghcr.io/dazwilkin/fly-exporter:897f2bbe476e834c9a3a0b53784c5d0360bfb5f9`
 
