@@ -9,8 +9,10 @@ import (
 	"time"
 
 	"github.com/DazWilkin/fly.io/collector"
+
 	"github.com/go-logr/logr"
 	"github.com/go-logr/stdr"
+
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )

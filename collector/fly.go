@@ -14,6 +14,7 @@ const (
 	url string = "https://api.fly.io"
 )
 
+// FlyCollector collects metrics
 type FlyCollector struct {
 	Token string
 	Log   logr.Logger
@@ -21,6 +22,7 @@ type FlyCollector struct {
 	Count *prometheus.Desc
 }
 
+// NewFlyCollector returns a new FlyCollector
 func NewFlyCollector(token string, log logr.Logger) *FlyCollector {
 	return &FlyCollector{
 		Token: token,
@@ -35,6 +37,7 @@ func NewFlyCollector(token string, log logr.Logger) *FlyCollector {
 	}
 }
 
+// Collect implements Prometheus' Collector interface and is used to collect metrics
 func (c *FlyCollector) Collect(ch chan<- prometheus.Metric) {
 	log := c.Log.WithName("Collect")
 
@@ -59,6 +62,8 @@ func (c *FlyCollector) Collect(ch chan<- prometheus.Metric) {
 	}
 
 }
+
+// Describe implements Prometheus' Collector interface and is used to describe metrics
 func (c *FlyCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.Count
 }
