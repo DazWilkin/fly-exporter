@@ -9,8 +9,8 @@ jobs:
   fly-exporter:
     name: fly-exporter
     runs-on: ubuntu-latest
-    # env:
-    #   REPO: dazwilkin/fly-exporter
+    env:
+      REPO: dazwilkin/fly-exporter
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -32,23 +32,23 @@ jobs:
           build-args: |
             VERSION=${{ env.VERSION }}
             COMMIT=${{ github.sha }}
-          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          tags: ghcr.io/${{ env.REPO }}:${{ github.sha }}
           push: true
-      # - name: Sigstore installer
-      #   uses: sigstore/cosign-installer@main
-      # - name: Write signing key to disk (only needed for `cosign sign --key`)
-      #   run: echo "${{ secrets.SIGNING }}" > ./cosign.key
-      # - name: Sign container image
-      #   run: |
-      #     cosign sign \
-      #     --key=./cosign.key \
-      #     --annotations="repo=${{ github.repository }}" \
-      #     --annotations="workflow=${{ github.workflow }}" \
-      #     --annotations="commit=${{ github.sha }}" \
-      #     --annotations="version=${{ env.VERSION }}" \
-      #     ghcr.io/${{ github.repository }}:${{ github.sha }}
-      #   env:
-      #     COSIGN_PASSWORD: ""
+      - name: Sigstore installer
+        uses: sigstore/cosign-installer@main
+      - name: Write signing key to disk (only needed for `cosign sign --key`)
+        run: echo "${{ secrets.SIGNING }}" > ./cosign.key
+      - name: Sign container image
+        run: |
+          cosign sign \
+          --key=./cosign.key \
+          --annotations="repo=${{ github.repository }}" \
+          --annotations="workflow=${{ github.workflow }}" \
+          --annotations="commit=${{ github.sha }}" \
+          --annotations="version=${{ env.VERSION }}" \
+          ghcr.io/${{ env.REPO }}:${{ github.sha }}
+        env:
+          COSIGN_PASSWORD: ""
       # - name: Revise occurrences of the image
       #   run: |
       #     git config --local user.email "action@github.com"
