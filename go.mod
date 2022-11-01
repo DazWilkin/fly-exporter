@@ -6,7 +6,7 @@ require (
 	github.com/go-logr/logr v1.2.3
 	github.com/go-logr/stdr v1.2.2
 	github.com/prometheus/client_golang v1.13.0
-	github.com/superfly/flyctl v0.0.401
+	github.com/superfly/flyctl v0.0.425
 	github.com/superfly/flyctl/api v0.0.0-20220909141550-90164a9ca37d
 
 )
@@ -26,6 +26,6 @@ require (
 	github.com/superfly/graphql v0.2.3 // indirect
 	github.com/vektah/gqlparser/v2 v2.5.0 // indirect
 	golang.org/x/net v0.0.0-20220907135653-1e95f45603a7 // indirect
-	golang.org/x/sys v0.0.0-20220908164124-27713097b956 // indirect
+	golang.org/x/sys v0.0.0-20220928140112-f11e5e49a4ec // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 )
