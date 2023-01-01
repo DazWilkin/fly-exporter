@@ -240,8 +240,8 @@ github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81P
 github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.8.0 h1:pSgiaMZlXftHpm5L7V1+rVB+AZJydKsMxsQBIJw4PKk=
-github.com/superfly/flyctl v0.0.435 h1:NjhTzBKgxJ5RhKXkoswyzmDQQunAN+f82hd8oEauhhY=
-github.com/superfly/flyctl v0.0.435/go.mod h1:uZ5C69q+E0N7H0KCVL4pzBBvTQtXfyYpEu6ZefG5yKA=
+github.com/superfly/flyctl v0.0.442 h1:ava0rdWEnd6qPhi5sl/Lc5ggK24Ar6wWkS2LYKgIh9c=
+github.com/superfly/flyctl v0.0.442/go.mod h1:+gPh3pfIDv4k9Vo6NU224V2IOESATD3opRgPWa7yTvc=
 github.com/superfly/flyctl/api v0.0.0-20221129142947-a7348c05a2e2 h1:+52YXFrNnkmlDjm1qs0ZRg5hRePgx/dcXUGkTK2281U=
 github.com/superfly/flyctl/api v0.0.0-20221129142947-a7348c05a2e2/go.mod h1:FFTUNnB2oml27QhYo3Y0+kTMPs2nI0SmiJnGIlfLO6A=
 github.com/superfly/graphql v0.2.3 h1:FvEifagMdMj5UdHWxLeMaqu8ViHK9env4fr2aqCk530=

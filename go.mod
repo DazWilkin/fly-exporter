@@ -6,7 +6,7 @@ require (
 	github.com/go-logr/logr v1.2.3
 	github.com/go-logr/stdr v1.2.2
 	github.com/prometheus/client_golang v1.14.0
-	github.com/superfly/flyctl v0.0.435
+	github.com/superfly/flyctl v0.0.442
 	github.com/superfly/flyctl/api v0.0.0-20221129142947-a7348c05a2e2
 
 )
