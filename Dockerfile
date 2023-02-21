@@ -1,5 +1,4 @@
-ARG GOLANG_VERSION=1.18
-ARG GOLANG_OPTIONS="CGO_ENABLED=0 GOOS=linux GOARCH=amd64"
+ARG GOLANG_VERSION=1.20
 
 ARG PROJECT="fly-exporter"
 
@@ -20,7 +19,7 @@ COPY collector ./collector
 ARG VERSION=""
 ARG COMMIT=""
 
-RUN env ${GOLANG_OPTIONS} \
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     go build \
     -ldflags "-X main.OSVersion=${VERSION} -X main.GitCommit=${COMMIT}" \
     -a -installsuffix cgo \
