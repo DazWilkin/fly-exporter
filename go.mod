@@ -26,7 +26,7 @@ require (
 	github.com/superfly/graphql v0.2.3 // indirect
 	github.com/vektah/gqlparser/v2 v2.5.1 // indirect
 	golang.org/x/crypto v0.5.0 // indirect
-	golang.org/x/net v0.5.0 // indirect
-	golang.org/x/sys v0.4.0 // indirect
+	golang.org/x/net v0.7.0 // indirect
+	golang.org/x/sys v0.5.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 )
