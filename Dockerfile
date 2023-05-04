@@ -1,12 +1,12 @@
 ARG GOLANG_VERSION=1.20.4
 
+ARG PROJECT="fly-exporter"
+
 ARG COMMIT
 ARG VERSION
 
-ARG GOOS
-ARG GOARCH
-
-ARG PROJECT="fly-exporter"
+ARG GOOS="linux"
+ARG GOARCH="amd64"
 
 FROM docker.io/golang:${GOLANG_VERSION} as build
 
