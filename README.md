@@ -31,10 +31,13 @@ Yields:
 # HELP build_info A metric with a constant '1' value labeled by OS version, Go version, and the Git commit of the exporter
 # TYPE build_info counter
 build_info{git_commit="897f2bbe476e834c9a3a0b53784c5d0360bfb5f9",go_version="go1.18.2",os_version="5.15.32-v8+"} 1
-# HELP fly_exporter_apps Total Number of Apps
-# TYPE fly_exporter_apps counter
-fly_exporter_apps{deployed="true",id="foo",name="foo",org_slug="personal",status="running"} 1
-fly_exporter_apps{deployed="true",id="foo",name="foo",org_slug="personal",status="running"} 1
+# HELP fly_exporter_app_info Info about Applications
+# TYPE fly_exporter_app_info counter
+fly_exporter_app_info{deployed="true",id="foo",name="foo",org_slug="personal",status="running"} 1
+fly_exporter_app_info{deployed="true",id="foo",name="foo",org_slug="personal",status="running"} 1
+# HELP fly_exporter_cert_info Info about Certificates
+# TYPE fly_exporter_cert_info counter
+fly_exporter_cert_info{app_id="foo",app_name="foo",status="Awaiting certificates"} 1
 # HELP start_time Exporter start time in Unix epoch seconds
 # TYPE start_time gauge
 start_time 1.652975685e+09

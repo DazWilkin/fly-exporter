@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"strconv"
+	"sync"
 
 	"github.com/go-logr/logr"
 	"github.com/prometheus/client_golang/prometheus"
@@ -21,7 +22,9 @@ type FlyCollector struct {
 	System System
 	Token  string
 	Log    logr.Logger
-	Apps   *prometheus.Desc
+
+	App  *prometheus.Desc
+	Cert *prometheus.Desc
 }
 
 // NewFlyCollector returns a new FlyCollector
@@ -31,10 +34,16 @@ func NewFlyCollector(s System, token string, log logr.Logger) *FlyCollector {
 		Token:  token,
 		Log:    log,
 
-		Apps: prometheus.NewDesc(
-			prometheus.BuildFQName(s.Namespace, s.Subsystem, "apps"),
-			"Total Number of Apps",
+		App: prometheus.NewDesc(
+			prometheus.BuildFQName(s.Namespace, s.Subsystem, "app_info"),
+			"Info about Applications",
 			[]string{"id", "name", "org_slug", "status", "deployed"},
+			nil,
+		),
+		Cert: prometheus.NewDesc(
+			prometheus.BuildFQName(s.Namespace, s.Subsystem, "cert_info"),
+			"Info about Certificates",
+			[]string{"app_id", "app_name", "status"},
 			nil,
 		),
 	}
@@ -53,27 +62,53 @@ func (c *FlyCollector) Collect(ch chan<- prometheus.Metric) {
 	apps, err := client.GetApps(ctx, &role)
 	if err != nil {
 		log.Error(err, "unable to get apps")
+		return
 	}
 
 	log.Info("Retrieved apps",
 		"number", len(apps),
 	)
 
+	var wg sync.WaitGroup
 	for _, app := range apps {
-		log.Info("Details",
-			"app", app,
-		)
-		ch <- prometheus.MustNewConstMetric(
-			c.Apps,
-			prometheus.CounterValue,
-			1.0,
-			app.ID, app.Name, app.Organization.Slug, app.Status, strconv.FormatBool(app.Deployed),
-		)
-	}
+		wg.Add(1)
+		go func(app api.App) {
+			defer wg.Done()
+			log := log.WithValues("app", app.Name)
+			log.Info("Details")
+			ch <- prometheus.MustNewConstMetric(
+				c.App,
+				prometheus.CounterValue,
+				1.0,
+				app.ID, app.Name, app.Organization.Slug, app.Status, strconv.FormatBool(app.Deployed),
+			)
 
+			// Collect app certificates
+			certs, err := client.GetAppCertificates(ctx, app.Name)
+			if err != nil {
+				log.Error(err, "unable to get app certificates")
+			}
+
+			log.Info("Retrieved app's certificates",
+				"number", len(certs),
+			)
+
+			for _, cert := range certs {
+				log := log.WithValues("cert", cert.ClientStatus)
+				log.Info("Details")
+				ch <- prometheus.MustNewConstMetric(
+					c.Cert,
+					prometheus.CounterValue,
+					1.0,
+					app.ID, app.Name, cert.ClientStatus,
+				)
+			}
+		}(app)
+		wg.Wait()
+	}
 }
 
 // Describe implements Prometheus' Collector interface and is used to describe metrics
 func (c *FlyCollector) Describe(ch chan<- *prometheus.Desc) {
-	ch <- c.Apps
+	ch <- c.App
 }
