@@ -1,6 +1,12 @@
-ARG GOLANG_VERSION=1.20
+ARG GOLANG_VERSION=1.20.4
 
 ARG PROJECT="fly-exporter"
+
+ARG COMMIT
+ARG VERSION
+
+ARG GOOS="linux"
+ARG GOARCH="amd64"
 
 FROM docker.io/golang:${GOLANG_VERSION} as build
 
@@ -16,10 +22,13 @@ RUN go mod download
 COPY main.go ./
 COPY collector ./collector
 
-ARG VERSION=""
-ARG COMMIT=""
+ARG VERSION
+ARG COMMIT
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+ARG GOOS
+ARG GOARCH
+
+RUN CGO_ENABLED=0 GOOS=${GOOS} GOARCH=${GOARCH} \
     go build \
     -ldflags "-X main.OSVersion=${VERSION} -X main.GitCommit=${COMMIT}" \
     -a -installsuffix cgo \
