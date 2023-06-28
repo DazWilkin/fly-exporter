@@ -5,9 +5,9 @@ go 1.20
 require (
 	github.com/go-logr/logr v1.2.4
 	github.com/go-logr/stdr v1.2.2
-	github.com/prometheus/client_golang v1.15.1
-	github.com/superfly/flyctl v0.1.6
-	github.com/superfly/flyctl/api v0.0.0-20230517154158-019ef68bd4cb
+	github.com/prometheus/client_golang v1.16.0
+	github.com/superfly/flyctl v0.1.41
+	github.com/superfly/flyctl/api v0.0.0-20230627194732-93b781fca390
 
 )
 
@@ -21,13 +21,13 @@ require (
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/prometheus/client_model v0.4.0 // indirect
-	github.com/prometheus/common v0.43.0 // indirect
-	github.com/prometheus/procfs v0.9.0 // indirect
+	github.com/prometheus/common v0.44.0 // indirect
+	github.com/prometheus/procfs v0.11.0 // indirect
 	github.com/superfly/graphql v0.2.4 // indirect
-	github.com/vektah/gqlparser/v2 v2.5.1 // indirect
-	golang.org/x/crypto v0.9.0 // indirect
-	golang.org/x/exp v0.0.0-20230515195305-f3d0a9c9a5cc // indirect
-	golang.org/x/net v0.10.0 // indirect
-	golang.org/x/sys v0.8.0 // indirect
-	google.golang.org/protobuf v1.30.0 // indirect
+	github.com/vektah/gqlparser/v2 v2.5.6 // indirect
+	golang.org/x/crypto v0.10.0 // indirect
+	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df // indirect
+	golang.org/x/net v0.11.0 // indirect
+	golang.org/x/sys v0.9.0 // indirect
+	google.golang.org/protobuf v1.31.0 // indirect
 )
