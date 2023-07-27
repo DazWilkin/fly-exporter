@@ -6,11 +6,12 @@ import (
 	"strconv"
 	"sync"
 
+	"github.com/DazWilkin/fly-exporter/terminal"
+
 	"github.com/go-logr/logr"
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/superfly/flyctl/api"
-	"github.com/superfly/flyctl/terminal"
 )
 
 const (
@@ -55,7 +56,12 @@ func (c *FlyCollector) Collect(ch chan<- prometheus.Metric) {
 
 	api.SetBaseURL(url)
 	name := fmt.Sprintf("%s_%s", c.System.Namespace, c.System.Subsystem)
-	client := api.NewClient(c.Token, name, c.System.Version, terminal.DefaultLogger)
+
+	// Replaced flyctl/terminal with own implementation
+	// flyctl/terminal takes a dependency on flyctl/internal
+	// And this caused Modules issues requiring the use of a replace
+	// github.com/loadsmart/calver-go => github.com/ndarilek/calver-go v0.0.0-20230710153822-893bbd83a936
+	client := api.NewClient(c.Token, name, c.System.Version, terminal.New(c.Log))
 
 	ctx := context.Background()
 	role := ""

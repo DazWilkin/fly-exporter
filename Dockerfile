@@ -21,6 +21,7 @@ RUN go mod download
 
 COPY main.go ./
 COPY collector ./collector
+COPY terminal ./terminal 
 
 ARG VERSION
 ARG COMMIT
