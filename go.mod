@@ -1,12 +1,12 @@
 module github.com/DazWilkin/fly-exporter
 
-go 1.20
+go 1.21.0
 
 require (
 	github.com/go-logr/logr v1.2.4
 	github.com/go-logr/stdr v1.2.2
 	github.com/prometheus/client_golang v1.16.0
-	github.com/superfly/flyctl/api v0.0.0-20230727195721-474c3de160f8
+	github.com/superfly/flyctl/api v0.0.0-20230825152930-b0223b8150e7
 
 )
 
@@ -23,8 +23,8 @@ require (
 	github.com/prometheus/procfs v0.11.1 // indirect
 	github.com/superfly/graphql v0.2.4 // indirect
 	github.com/vektah/gqlparser/v2 v2.5.8 // indirect
-	golang.org/x/crypto v0.11.0 // indirect
-	golang.org/x/exp v0.0.0-20230725093048-515e97ebf090 // indirect
-	golang.org/x/sys v0.10.0 // indirect
+	golang.org/x/crypto v0.12.0 // indirect
+	golang.org/x/exp v0.0.0-20230817173708-d852ddb80c63 // indirect
+	golang.org/x/sys v0.11.0 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 )
