@@ -1,10 +1,8 @@
 name: build
-
 on:
   push:
     branches:
       - master
-
 jobs:
   fly-exporter:
     name: fly-exporter
@@ -14,6 +12,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
+      - name: QEMU
+        uses: docker/setup-qemu-action@v3
       - name: setup
         uses: docker/setup-buildx-action@v3
       - name: login
@@ -24,11 +24,12 @@ jobs:
           password: ${{ secrets.GHCR }}
       - name: get-version
         run: echo "VERSION=$(uname --kernel-release)" >> ${GITHUB_ENV}
-      - name: docker-build-push
-        id: docker-build-push
+      - name: Buildx Multi-platform Docker Images
+        id: docker-build-push-multi-platform
         uses: docker/build-push-action@v6
         with:
           context: .
+          platforms: linux/amd64,linux/arm64/v7,linux/arm64
           file: ./Dockerfile
           build-args: |
             VERSION=${{ env.VERSION }}
@@ -40,7 +41,9 @@ jobs:
       - name: write-key
         run: echo "${{ secrets.SIGNING }}" > ./cosign.key
       - name: sign-container-image
-        run: |
+        run: |-
+          DIGEST=${{ steps.docker-build-push-multi-platform.outputs.digest }}
+
           cosign sign \
           --yes \
           --key=./cosign.key \
@@ -48,7 +51,7 @@ jobs:
           --annotations="workflow=${{ github.workflow }}" \
           --annotations="commit=${{ github.sha }}" \
           --annotations="version=${{ env.VERSION }}" \
-          ghcr.io/${{ env.REPO }}@${{ steps.docker-build-push.outputs.digest }}
+          ghcr.io/${{ env.REPO }}@${DIGEST}
         env:
           COSIGN_PASSWORD: ""
       - name: revise-docs

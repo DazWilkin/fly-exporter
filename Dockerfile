@@ -1,14 +1,14 @@
-ARG GOLANG_VERSION=1.23.0
+ARG GOLANG_VERSION=1.23.3
 
 ARG PROJECT="fly-exporter"
 
 ARG COMMIT
 ARG VERSION
 
-ARG GOOS="linux"
-ARG GOARCH="amd64"
+ARG TARGETOS
+ARG TARGETARCH
 
-FROM docker.io/golang:${GOLANG_VERSION} as build
+FROM --platform=${TARGETARCH} docker.io/golang:${GOLANG_VERSION} AS build
 
 ARG PROJECT
 
@@ -26,19 +26,19 @@ COPY terminal ./terminal
 ARG VERSION
 ARG COMMIT
 
-ARG GOOS
-ARG GOARCH
+ARG TARGETOS
+ARG TARGETARCH
 
-RUN CGO_ENABLED=0 GOOS=${GOOS} GOARCH=${GOARCH} \
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
     go build \
     -ldflags "-X main.OSVersion=${VERSION} -X main.GitCommit=${COMMIT}" \
     -a -installsuffix cgo \
     -o /bin/exporter \
     ./main.go
 
-FROM gcr.io/distroless/static
+FROM --platform=${TARGETARCH} gcr.io/distroless/static
 
-LABEL org.opencontainers.image.source https://github.com/DazWilkin/fly-exporter
+LABEL org.opencontainers.image.source=https://github.com/DazWilkin/fly-exporter
 
 COPY --from=build /bin/exporter /
 
