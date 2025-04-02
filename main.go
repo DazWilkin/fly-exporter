@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"html/template"
 	stdlog "log"
 	"net/http"
 	"os"
@@ -23,6 +24,32 @@ const (
 	version   string = "v0.0.1"
 )
 
+const (
+	rootTemplate string = `
+{{- define "content" }}
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<title>Prometheus Exporter for Fly.io</title>
+<style>
+body {
+  font-family: Verdana;
+}
+</style>
+</head>
+<body>
+	<h2>Prometheus Exporter for Fly.io</h2>
+	<hr/>
+	<ul>
+	<li><a href="{{ .MetricsPath }}">metrics</a></li>
+	<li><a href="/healthz">healthz</a></li>
+	</ul>
+</body>
+</html>
+{{- end}}
+`
+)
+
 var (
 	// GitCommit is the git commit value and is expected to be set during build
 	GitCommit string
@@ -34,7 +61,8 @@ var (
 	StartTime = time.Now().Unix()
 )
 var (
-	endpoint = flag.String("endpoint", "0.0.0.0:8080", "The endpoint of the HTTP server")
+	endpoint    = flag.String("endpoint", "0.0.0.0:8080", "The endpoint of the HTTP server")
+	metricsPath = flag.String("path", "/metrics", "The path on which Prometheus metrics will be served")
 )
 var (
 	log logr.Logger
@@ -43,13 +71,22 @@ var (
 	token = os.Getenv("TOKEN")
 )
 
+type Content struct {
+	MetricsPath string
+}
+
 func handleHealthz(w http.ResponseWriter, _ *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("ok"))
+	if _, err := w.Write([]byte("ok")); err != nil {
+		log.Error(err, "unable to write response")
+	}
 }
 func handleRoot(w http.ResponseWriter, _ *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("<a href=/metrics>metrics</a>"))
+	w.Header().Set("Content-Type", "text/html; charset=UTF-8")
+	t := template.Must(template.New("content").Parse(rootTemplate))
+	if err := t.ExecuteTemplate(w, "content", Content{MetricsPath: *metricsPath}); err != nil {
+		log.Error(err, "unable to execute template")
+	}
 }
 func main() {
 	log = stdr.NewWithOptions(stdlog.New(os.Stderr, "", stdlog.LstdFlags), stdr.Options{LogCaller: stdr.All})
@@ -89,7 +126,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle("/", http.HandlerFunc(handleRoot))
 	mux.Handle("/healthz", http.HandlerFunc(handleHealthz))
-	mux.Handle("/metrics", promhttp.HandlerFor(registry, promhttp.HandlerOpts{}))
+	mux.Handle(*metricsPath, promhttp.HandlerFor(registry, promhttp.HandlerOpts{}))
 
 	log.Info("Server starting",
 		"endpoint", *endpoint,
