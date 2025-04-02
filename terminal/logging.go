@@ -6,6 +6,10 @@
 package terminal
 
 import (
+	"encoding/json"
+	"fmt"
+	"io"
+
 	"github.com/go-logr/logr"
 
 	"github.com/superfly/flyctl/api"
@@ -30,11 +34,54 @@ func New(log logr.Logger) Terminal {
 }
 
 // Debug is a method that wraps go-logr/logger.Info
-func (t Terminal) Debug(v ...interface{}) {
-	t.log.Info("debug", v...)
+func (t Terminal) Debug(v ...any) {
+	logContent := func(b []byte) {
+		if len(b) == 0 {
+			return
+		}
+
+		if json.Valid(b) {
+			var j map[string]any
+			if err := json.Unmarshal(b, &j); err != nil {
+				t.log.Info("debug",
+					"err", err,
+				)
+				return
+			}
+
+			t.log.Info("debug",
+				"json", j,
+			)
+			return
+		}
+
+		t.log.Info("debug",
+			"string", string(b),
+		)
+	}
+
+	for _, item := range v {
+		switch typedItem := item.(type) {
+		case string:
+			b := []byte(typedItem)
+			logContent(b)
+		case io.Reader:
+			b, err := io.ReadAll(typedItem)
+			if err != nil {
+				t.log.Info("debug", "err", err)
+				continue
+			}
+			logContent(b)
+		default:
+			t.log.Info("debug",
+				"type", fmt.Sprintf("%T", typedItem),
+				"content", typedItem,
+			)
+		}
+	}
 }
 
 // Debugf is a method that wraps go-logr/logger.Info
-func (t Terminal) Debugf(format string, v ...interface{}) {
+func (t Terminal) Debugf(format string, v ...any) {
 	t.log.Info(format, v...)
 }
