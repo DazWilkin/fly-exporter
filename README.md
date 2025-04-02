@@ -4,13 +4,13 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/DazWilkin/fly-exporter.svg)](https://pkg.go.dev/github.com/DazWilkin/fly-exporter)
 [![Go Report Card](https://goreportcard.com/badge/github.com/DazWilkin/fly-exporter)](https://goreportcard.com/report/github.com/DazWilkin/fly-exporter)
 
-+ `ghcr.io/dazwilkin/fly-exporter:2259d30abca1b0f24b7975811c49086d81532eec`
++ `ghcr.io/dazwilkin/fly-exporter:6f4a67b664c0d7ff732fe93fd2ceee7de14fbfce`
 
 ## Container
 
 ```bash
 TOKEN="[FLY-TOKEN]"
-IMAGE="ghcr.io/dazwilkin/fly-exporter:2259d30abca1b0f24b7975811c49086d81532eec"
+IMAGE="ghcr.io/dazwilkin/fly-exporter:6f4a67b664c0d7ff732fe93fd2ceee7de14fbfce"
 
 podman run \
 --interactive --tty --rm \
@@ -92,7 +92,7 @@ fly-exporter container images are being signed by Sigstore and may be verified:
 ```bash
 cosign verify \
 --key=./cosign.pub \
-ghcr.io/dazwilkin/fly-exporter:2259d30abca1b0f24b7975811c49086d81532eec
+ghcr.io/dazwilkin/fly-exporter:6f4a67b664c0d7ff732fe93fd2ceee7de14fbfce
 ```
 
 > **NOTE** cosign.pub may be downloaded [here](/cosign.pub)
@@ -106,9 +106,14 @@ go install github.com/sigstore/cosign/cmd/cosign@latest
 ## Similar Exporters
 
 + [Prometheus Exporter for Azure](https://github.com/DazWilkin/azure-exporter)
-+ [Prometheus Exporter for GCP](https://github.com/DazWilkin/gcp-exporter)
++ [Prometheus Exporter for crt.sh](https://github.com/DazWilkin/crtsh-exporter)
++ [Prometheus Exporter for Fly.io](https://github.com/DazWilkin/fly-exporter)
++ [Prometheus Exporter for GoatCounter](https://github.com/DazWilkin/goatcounter-exporter)
++ [Prometheus Exporter for Google Cloud](https://github.com/DazWilkin/gcp-exporter)
 + [Prometheus Exporter for Koyeb](https://github.com/DazWilkin/koyeb-exporter)
 + [Prometheus Exporter for Linode](https://github.com/DazWilkin/linode-exporter)
++ [Prometheus Exporter for PorkBun](https://github.com/DazWilkin/porkbun-exporter)
++ [Prometheus Exporter for updown.io](https://github.com/DazWilkin/updown-exporter)
 + [Prometheus Exporter for Vultr](https://github.com/DazWilkin/vultr-exporter)
 
 <hr/>
