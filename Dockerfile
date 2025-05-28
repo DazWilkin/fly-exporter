@@ -1,4 +1,4 @@
-ARG GOLANG_VERSION=1.24
+ARG GOLANG_VERSION=1.24.3
 
 ARG PROJECT="fly-exporter"
 
@@ -36,7 +36,7 @@ RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
     -o /bin/exporter \
     ./main.go
 
-FROM --platform=${TARGETARCH} gcr.io/distroless/static
+FROM --platform=${TARGETARCH} gcr.io/distroless/static-debian12:latest
 
 LABEL org.opencontainers.image.source=https://github.com/DazWilkin/fly-exporter
 
